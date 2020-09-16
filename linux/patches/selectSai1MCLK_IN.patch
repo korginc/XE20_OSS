@@ -1,0 +1,16 @@
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 5bd5d8d6ea2b..d1497cf905bd 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -291,6 +291,11 @@ static int fsl_sai_set_dai_fmt_tr(struct snd_soc_dai *cpu_dai,
+ 		return -EINVAL;
+ 	}
+ 
++	if (sai->is_slave_mode)
++	{	// Select MCLK_IN
++		regmap_update_bits(sai->regmap, 0x100, 1 << 30, 0);
++	}
++ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx),
+ 			   FSL_SAI_CR2_BCP | FSL_SAI_CR2_BCD_MSTR, val_cr2);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
